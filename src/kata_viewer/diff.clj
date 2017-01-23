@@ -21,8 +21,21 @@
 (defn- diff-pad-collections [a b]
   (let [a-len (count a)
         b-len (count b)]
-    (if (> a-len b-len)
+    (cond
+      (and
+       (> b-len a-len 0)
+       (= (nth a 0) (nth b 1)))
+      [(into [:missing] a) b]
+
+      (and
+       (> a-len b-len 0)
+       (= (nth a 1) (nth b 0)))
+      [a (into [:missing] b)]
+
+      (> a-len b-len)
       [a (conj b :missing)]
+
+      (< a-len b-len)
       [(conj a :missing) b])))
 
 (defn diff [a b]

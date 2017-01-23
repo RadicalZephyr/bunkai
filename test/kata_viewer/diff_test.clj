@@ -23,4 +23,8 @@
   (t/testing "Is it removal or addition, or both"
     (t/is (= {0  [:- "Hi!"]}
              (sut/diff ["Hi!" "Bob"]
-                       ["Bob"] )))))
+                       ["Bob"] )))
+
+    (t/is (= {0  [:+ "Hi!"]}
+             (sut/diff ["Bob"]
+                       ["Hi!" "Bob"] )))))
