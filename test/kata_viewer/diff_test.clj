@@ -11,4 +11,7 @@
   (t/is (= {1  [:+ "Bob"]}
            (sut/diff "foo.clj"
                      ["Hi!"]
-                     ["Hi!" "Bob"]))))
+                     ["Hi!" "Bob"])))
+
+  (t/is (= {0  [:- "Hi!"]}
+           (sut/diff "foo.clj" ["Hi!"] []))))
