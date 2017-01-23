@@ -7,16 +7,15 @@
 (t/deftest test-diff
   (t/testing "Basic line addition"
     (t/is (= {0  [:+ "Hi!"]}
-             (sut/diff "foo.clj" [] ["Hi!"])))
+             (sut/diff [] ["Hi!"])))
 
     (t/is (= {1  [:+ "Bob"]}
-             (sut/diff "foo.clj"
-                       ["Hi!"]
+             (sut/diff ["Hi!"]
                        ["Hi!" "Bob"]))))
 
   (t/testing "Basic line removal"
     (t/is (= {0  [:- "Hi!"]}
-             (sut/diff "foo.clj" ["Hi!"] [])))
+             (sut/diff ["Hi!"] [])))
 
     (t/is (= {1  [:- "Bob"]}
-             (sut/diff "foo.clj" ["Hi!" "Bob"] ["Hi!"])))))
+             (sut/diff ["Hi!" "Bob"] ["Hi!"])))))

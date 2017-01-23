@@ -5,7 +5,8 @@
   (cond
     (= aline bline)        [:=]
     (= :missing aline) [:+ bline]
-    (= :missing bline) [:- aline]))
+    (= :missing bline) [:- aline]
+    :else :should-never-happen))
 
 (defn- compare-lines [[i [_ aline bline]]]
   [i (compare aline bline)])
@@ -24,6 +25,6 @@
       [a (conj b :missing)]
       [(conj a :missing) b])))
 
-(defn diff [f a b]
+(defn diff [a b]
   (let [[a b] (diff-pad-collections a b)]
     (into {} t (map vector a b))))
