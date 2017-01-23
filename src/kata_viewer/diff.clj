@@ -1,16 +1,14 @@
 (ns kata-viewer.diff)
 
-(defn- compare-lines [f]
-  (fn [[i [_ aline bline]]]
-    [[f i] [:+ bline]]))
+(defn- compare-lines [[i [_ aline bline]]]
+  [i [:+ bline]])
 
-(defn- make-transducer [f]
+(def t
   (comp
    (map (juxt #(apply = %) first second))
    (map-indexed vector)
    (remove (comp first second))
-   (map (compare-lines f))))
+   (map compare-lines)))
 
 (defn diff [f a b]
-  (let [t (make-transducer f)]
-    (into {} t (map vector (concat a [""]) b))))
+  (into {} t (map vector (concat a [""]) b)))
