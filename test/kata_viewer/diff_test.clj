@@ -5,22 +5,23 @@
 ;; Line-based diffing and patching tools
 
 (t/deftest test-diff
-  (t/testing "Basic line addition"
-    (t/is (= {0  [:+ "Hi!"]}
-             (sut/diff [] ["Hi!"])))
+  (t/testing "Add and remove at the end"
+    (t/testing "Basic line addition"
+      (t/is (= {0  [:+ "Hi!"]}
+               (sut/diff [] ["Hi!"])))
 
-    (t/is (= {1  [:+ "Bob"]}
-             (sut/diff ["Hi!"]
-                       ["Hi!" "Bob"]))))
+      (t/is (= {1  [:+ "Bob"]}
+               (sut/diff ["Hi!"]
+                         ["Hi!" "Bob"]))))
 
-  (t/testing "Basic line removal"
-    (t/is (= {0  [:- "Hi!"]}
-             (sut/diff ["Hi!"] [])))
+    (t/testing "Basic line removal"
+      (t/is (= {0  [:- "Hi!"]}
+               (sut/diff ["Hi!"] [])))
 
-    (t/is (= {1  [:- "Bob"]}
-             (sut/diff ["Hi!" "Bob"] ["Hi!"]))))
+      (t/is (= {1  [:- "Bob"]}
+               (sut/diff ["Hi!" "Bob"] ["Hi!"])))))
 
-  (t/testing "Is it removal or addition, or both"
+  (t/testing "Add and remove at the beginning"
     (t/is (= {0  [:- "Hi!"]}
              (sut/diff ["Hi!" "Bob"]
                        ["Bob"] )))
