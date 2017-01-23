@@ -70,4 +70,10 @@
                [1 3]}
              (sut/edit-graph
               "abca"
-              "cbab")))))
+              "cbab"))))
+
+  (t/testing "different length sequences"
+    (t/is (= #{[0 2]}
+             (sut/edit-graph
+              "a"
+              "cba")))))
