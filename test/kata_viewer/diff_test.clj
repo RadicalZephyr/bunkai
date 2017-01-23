@@ -29,3 +29,23 @@
     (t/is (= {0  [:+ "Hi!"]}
              (sut/diff ["Bob"]
                        ["Hi!" "Bob"] )))))
+
+(t/deftest test-edit-graph
+  (t/testing "Make basic same-length edit-graphs"
+    (t/is (= #{[0,0]}
+             (sut/edit-graph ["a"] ["a"])))
+
+    (t/is (= #{[1,1]}
+             (sut/edit-graph
+              ["a" "b"]
+              ["c" "b"])))
+
+    (t/is (= #{[0,0] [1,1]}
+             (sut/edit-graph
+              ["a" "b"]
+              ["a" "b"])))
+
+    (t/is (= #{}
+             (sut/edit-graph
+              ["c"]
+              ["d"])))))

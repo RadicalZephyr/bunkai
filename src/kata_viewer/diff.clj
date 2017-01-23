@@ -41,3 +41,12 @@
 (defn diff [a b]
   (let [[a b] (diff-pad-collections a b)]
     (into {} t (map vector a b))))
+
+(defn- compare-things [i [a b]]
+  (when (= a b)
+    [i,i]))
+
+(defn edit-graph [a b]
+  (->> (map vector a b)
+       (keep-indexed compare-things)
+       (into #{} )))
