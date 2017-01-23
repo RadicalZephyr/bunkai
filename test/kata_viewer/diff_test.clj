@@ -18,4 +18,9 @@
              (sut/diff ["Hi!"] [])))
 
     (t/is (= {1  [:- "Bob"]}
-             (sut/diff ["Hi!" "Bob"] ["Hi!"])))))
+             (sut/diff ["Hi!" "Bob"] ["Hi!"]))))
+
+  (t/testing "Is it removal or addition, or both"
+    (t/is (= {0  [:- "Hi!"]}
+             (sut/diff ["Hi!" "Bob"]
+                       ["Bob"] )))))
