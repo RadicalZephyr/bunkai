@@ -47,6 +47,9 @@
     [i,i]))
 
 (defn edit-graph [a b]
-  (->> (map vector a b)
-       (keep-indexed compare-things)
-       (into #{} )))
+  (->> (for [[x ia] (map-indexed vector a)
+             [y ib] (map-indexed vector b)]
+         (when (= ia ib)
+           [x,y]))
+       (filter identity)
+       (into #{})))

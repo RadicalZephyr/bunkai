@@ -48,4 +48,26 @@
     (t/is (= #{}
              (sut/edit-graph
               ["c"]
-              ["d"])))))
+              ["d"]))))
+
+  (t/testing "off 0-path diagonals"
+    (t/is (= #{[1 0] [1 1]}
+             (sut/edit-graph
+              ["a" "b"]
+              ["b" "b"])))
+
+    (t/is (= #{[1 1]
+               [0 2]
+               [2 0]}
+             (sut/edit-graph
+              "abc"
+              "cba")))
+
+    (t/is (= #{[1 1]
+               [2 0]
+               [0 2]
+               [3 2]
+               [1 3]}
+             (sut/edit-graph
+              "abca"
+              "cbab")))))
