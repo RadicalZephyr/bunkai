@@ -53,3 +53,36 @@
            [x,y]))
        (filter identity)
        (into #{})))
+
+(defn greedy-ses [g a b]
+  (let [m (count a)
+        n (count b)
+        max (+ m n)]
+    (loop [dks (for [d (range max)
+                     k (range (- d) (inc d) 2)]
+                 [d k])
+           v {}]
+      (if (seq dks)
+        (let [[d k] (first dks)
+              k-1 (get v (dec k))
+              k+1 (get v (inc k))
+              x (if (and
+                     (or (= k (- d))
+                         (not= k d))
+                     (< k-1 k+1))
+                  k+1
+                  (inc k-1))
+              y (- x k)
+              [x y] (loop [coord [x y]]
+                      (if (and
+                           (> n x)
+                           (> m y)
+                           (g coord))
+                        (recur (mapv inc coord))
+                        coord))]
+          (if (and
+               (>= x n)
+               (>= y m))
+            v
+            (recur (rest dks) (assoc v k x))))
+        :length-of-ses>max))))
