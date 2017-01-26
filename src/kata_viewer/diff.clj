@@ -53,11 +53,22 @@
          [x y])
        (into #{})))
 
+(defn make-follow-snake [g m n]
+  (fn [ox oy]
+    (loop [[x y :as coord] [ox oy]]
+      (if (and
+           (> n x)
+           (> m y)
+           (g coord))
+        (recur (mapv inc coord))
+        coord))))
+
 (defn greedy-ses [a b]
   (let [g (edit-graph a b)
         m (count a)
         n (count b)
-        max (+ m n)]
+        max (+ m n)
+        follow-snake (make-follow-snake g m n)]
     (loop [dks (for [d (range max)
                      k (range (- d) (inc d) 2)]
                  [d k])
@@ -74,13 +85,7 @@
                   k+1
                   (inc k-1))
               y (- x k)
-              [x y] (loop [[x y :as coord] [x y]]
-                      (if (and
-                           (> n x)
-                           (> m y)
-                           (g coord))
-                        (recur (mapv inc coord))
-                        coord))]
+              [x y] (follow-snake x y)]
           (if (and
                (>= x n)
                (>= y m))
