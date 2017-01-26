@@ -74,7 +74,7 @@
                   k+1
                   (inc k-1))
               y (- x k)
-              [x y] (loop [coord [x y]]
+              [x y] (loop [[x y :as coord] [x y]]
                       (if (and
                            (> n x)
                            (> m y)
