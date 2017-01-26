@@ -80,13 +80,16 @@
 
 (t/deftest test-greedy-ses
 
-  (t/is (= :length-of-ses>max
+  (t/is (= :diff/no-differences
            (sut/greedy-ses "" "")))
-  (t/is (= :length-of-ses>max
+  (t/is (= :diff/no-differences
+           (sut/greedy-ses "a" "a")))
+  (t/is (= :diff/no-differences
+           (sut/greedy-ses "abcdef" "abcdef")))
+
+  (t/is (= :diff/length-of-ses>max
            (sut/greedy-ses "a" "b")))
 
-  (t/is (= {1 0}
-           (sut/greedy-ses "a" "a")))
   (t/is (= {1 1, 0 0, -1 1, -2 1}
            (sut/greedy-ses "aa" "ba")))
 
@@ -104,9 +107,6 @@
   (t/is (= {0 5,-4 4,7 8,1 6,-2 5,4 6,-1 5,-8 1,-6 2,-3 4,6 7,3 7,2 6,-7 1,5 7,-5 2}
            (sut/greedy-ses "abcdef" "cbafed")))
 
-  (t/is (= {1 0}
-           (sut/greedy-ses "abcdef" "abcdef")))
-
   (t/is (= {1 4, 0 6, -1 6, -2 5, 2 5, -3 5}
            (sut/greedy-ses "abcdef" "abc1def")))
 
@@ -114,4 +114,5 @@
            (sut/greedy-ses "abcdef" "abc1234def")))
 
   (t/is (= {0 7,-4 5,7 11,1 8,-2 6,4 9,-1 7,-8 4,-6 5,-3 6,6 10,3 9,2 8,-7 4,9 12,5 10,-9 3,-10 3,-5 5,8 11}
-           (sut/greedy-ses "abc1234def" "abcdef"))))
+           (sut/greedy-ses "abc1234def" "abcdef")))
+  )

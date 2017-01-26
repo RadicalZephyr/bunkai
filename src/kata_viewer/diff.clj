@@ -74,24 +74,26 @@
         n (count b)
         max (+ m n)
         follow-snake (make-follow-snake g m n)]
-    (loop [dks (all-d-k-pairs max)
-           v {1 0}]
-      (if (seq dks)
-        (let [[d k] (first dks)
-              k-1 (get v (dec k))
-              k+1 (get v (inc k))
-              x (if (or
-                     (= k (- d))
-                     (and
-                      (not= k d)
-                      (< k-1 k+1)))
-                  k+1
-                  (inc k-1))
-              y (- x k)
-              [x y] (follow-snake x y)]
-          (if (and
-               (>= x n)
-               (>= y m))
-            v
-            (recur (rest dks) (assoc v k x))))
-        :length-of-ses>max))))
+    (if (= a b)
+      :diff/no-differences
+      (loop [dks (all-d-k-pairs max)
+             v {1 0}]
+        (if (seq dks)
+          (let [[d k] (first dks)
+                k-1 (get v (dec k))
+                k+1 (get v (inc k))
+                x (if (or
+                       (= k (- d))
+                       (and
+                        (not= k d)
+                        (< k-1 k+1)))
+                    k+1
+                    (inc k-1))
+                y (- x k)
+                [x y] (follow-snake x y)]
+            (if (and
+                 (>= x n)
+                 (>= y m))
+              v
+              (recur (rest dks) (assoc v k x))))
+          :diff/length-of-ses>max)))))
