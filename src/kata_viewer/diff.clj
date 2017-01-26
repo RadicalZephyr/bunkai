@@ -48,10 +48,9 @@
 
 (defn edit-graph [a b]
   (->> (for [[x ia] (map-indexed vector a)
-             [y ib] (map-indexed vector b)]
-         (when (= ia ib)
-           [x,y]))
-       (filter identity)
+             [y ib] (map-indexed vector b)
+             :when (= ia ib)]
+         [x y])
        (into #{})))
 
 (defn greedy-ses [a b]
