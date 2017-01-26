@@ -63,15 +63,18 @@
         (recur (mapv inc coord))
         coord))))
 
+(defn all-d-k-pairs [max]
+  (for [d (range max)
+        k (range (- d) (inc d) 2)]
+    [d k]))
+
 (defn greedy-ses [a b]
   (let [g (edit-graph a b)
         m (count a)
         n (count b)
         max (+ m n)
         follow-snake (make-follow-snake g m n)]
-    (loop [dks (for [d (range max)
-                     k (range (- d) (inc d) 2)]
-                 [d k])
+    (loop [dks (all-d-k-pairs max)
            v {1 0}]
       (if (seq dks)
         (let [[d k] (first dks)
