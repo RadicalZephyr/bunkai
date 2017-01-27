@@ -2,9 +2,9 @@
 
 (defn neighbors
   ([edit-graph yx]
-   (neighbors (concat [[0 1] [1 0]]
+   (neighbors (concat [[0 -1] [-1 0]]
                       (when (edit-graph yx)
-                        [[1 1]]))
+                        [[-1 -1]]))
               edit-graph
               yx))
   ([deltas edit-graph yx]
