@@ -1,5 +1,6 @@
 (ns kata-viewer.diff
-  (:refer-clojure :exclude [compare]))
+  (:refer-clojure :exclude [compare])
+  (:require [clojure.tools.trace :as t]))
 
 (defn- compare [aline bline]
   (cond
@@ -67,35 +68,37 @@
   (if (= a b)
     :diff/no-differences
     (let [g (edit-graph a b)
-          m (count a)
-          n (count b)
-          max (+ m n)
-          follow-snake (make-follow-snake g m n)]
+          n (count a)
+          m (count b)
+          max (+ m n)]
       (loop [ds (range 0 (inc max))
              v {1 0}]
         (if (seq ds)
-          (let [d (first ds)
+          (let [d (t/trace :d (first ds))
                 v (loop [ks (range (- d) (inc d) 2)
                          v v]
+                    (t/trace :inner-v v)
                     (if (seq ks)
-                      (let [k (first ks)
-                            k-1 (get v (dec k))
-                            k+1 (get v (inc k))
+                      (let [k (t/trace :k (first ks))
+                            k-1 (t/trace :k-1 (get v (dec k)))
+                            k+1 (t/trace :k+1 (get v (inc k)))
                             x (if (or
                                    (= k (- d))
                                    (and
                                     (not= k d)
                                     (< k-1 k+1)))
                                 k+1
-                                k-1)
-                            y (- x k)
-                            [x y] (loop [xy [x y]]
-                                    (if (contains? g xy)
-                                      (recur (mapv inc xy))
-                                      xy))]
-                        (if (and (>= x m) (>= y n))
+                                (inc k-1))
+                            y (- (t/trace :x x) k)
+                            [x y] (t/trace :furthest-xy
+                                   (loop [xy (t/trace :initial-xy [x y])]
+                                     (if (contains? g xy)
+                                       (recur (mapv inc xy))
+                                       xy)))]
+                        (if (and (>= x n) (>= y m))
                           v
                           (recur (rest ks) (assoc v k x))))
                       v))]
+            (t/trace :v v)
             (recur (rest ds) v))
           :diff/length-of-ses>max)))))
