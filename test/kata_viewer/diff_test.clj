@@ -87,7 +87,7 @@
   (t/is (= :diff/no-differences
            (sut/greedy-ses "abcdef" "abcdef")))
 
-  (t/is (= :diff/length-of-ses>max
+  (t/is (= {1 1, 0 0, -1 0, -2 0}
            (sut/greedy-ses "a" "b")))
 
   (t/is (= {1 1, 0 0, -1 1, -2 1}
@@ -96,9 +96,9 @@
   (t/is (= {1 2, 0 1, -1 1, -2 1}
            (sut/greedy-ses "aa" "ab")))
 
-  (t/is (= {1 0, 0 2, -1 2}
-           (sut/greedy-ses "aa" "aaa")))
   (t/is (= {1 0, 0 2}
+           (sut/greedy-ses "aa" "aaa")))
+  (t/is (= {1 0, 0 2, -1 2}
            (sut/greedy-ses "aaa" "aa")))
 
   (t/is (= {1 3, 0 2, -1 2, -2 2, 2 3, -3 1, 3 4, -4 1}
@@ -107,12 +107,11 @@
   (t/is (= {0 5,-4 4,7 8,1 6,-2 5,4 6,-1 5,-8 1,-6 2,-3 4,6 7,3 7,2 6,-7 1,5 7,-5 2}
            (sut/greedy-ses "abcdef" "cbafed")))
 
-  (t/is (= {1 4, 0 6, -1 6, -2 5, 2 5, -3 5}
+  (t/is (= {1 0, 0 3}
            (sut/greedy-ses "abcdef" "abc1def")))
 
-  (t/is (= {0 8,-4 6,7 11,1 8,-2 7,4 9,-1 7,-8 4,-6 5,-3 6,6 10,3 9,2 9,-7 4,9 12,5 10,-9 3,-10 3,-5 5,8 11}
+  (t/is (= {1 5, 0 4, -1 4, -2 3, 2 5, -3 3, 3 6}
            (sut/greedy-ses "abcdef" "abc1234def")))
 
-  (t/is (= {0 7,-4 5,7 11,1 8,-2 6,4 9,-1 7,-8 4,-6 5,-3 6,6 10,3 9,2 8,-7 4,9 12,5 10,-9 3,-10 3,-5 5,8 11}
-           (sut/greedy-ses "abc1234def" "abcdef")))
-  )
+  (t/is (= {1 5, 0 5, -1 4, -2 4, 2 6, -3 3, 3 6, -4 3}
+           (sut/greedy-ses "abc1234def" "abcdef"))))
