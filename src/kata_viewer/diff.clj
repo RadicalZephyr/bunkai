@@ -63,37 +63,39 @@
         (recur (mapv inc coord))
         coord))))
 
-(defn all-d-k-pairs [max]
-  (for [d (range max)
-        k (range (- d) (inc d) 2)]
-    [d k]))
-
 (defn greedy-ses [a b]
-  (let [g (edit-graph a b)
-        m (count a)
-        n (count b)
-        max (+ m n)
-        follow-snake (make-follow-snake g m n)]
-    (if (= a b)
-      :diff/no-differences
-      (loop [dks (all-d-k-pairs max)
+  (if (= a b)
+    :diff/no-differences
+    (let [g (edit-graph a b)
+          m (count a)
+          n (count b)
+          max (+ m n)
+          follow-snake (make-follow-snake g m n)]
+      (loop [ds (range 0 (inc max))
              v {1 0}]
-        (if (seq dks)
-          (let [[d k] (first dks)
-                k-1 (get v (dec k))
-                k+1 (get v (inc k))
-                x (if (or
-                       (= k (- d))
-                       (and
-                        (not= k d)
-                        (< k-1 k+1)))
-                    k+1
-                    (inc k-1))
-                y (- x k)
-                [x y] (follow-snake x y)]
-            (if (and
-                 (>= x n)
-                 (>= y m))
-              v
-              (recur (rest dks) (assoc v k x))))
+        (if (seq ds)
+          (let [d (first ds)
+                v (loop [ks (range (- d) (inc d) 2)
+                         v v]
+                    (if (seq ks)
+                      (let [k (first ks)
+                            k-1 (get v (dec k))
+                            k+1 (get v (inc k))
+                            x (if (or
+                                   (= k (- d))
+                                   (and
+                                    (not= k d)
+                                    (< k-1 k+1)))
+                                k+1
+                                k-1)
+                            y (- x k)
+                            [x y] (loop [xy [x y]]
+                                    (if (contains? g xy)
+                                      (recur (mapv inc xy))
+                                      xy))]
+                        (if (and (>= x m) (>= y n))
+                          v
+                          (recur (rest ks) (assoc v k x))))
+                      v))]
+            (recur (rest ds) v))
           :diff/length-of-ses>max)))))
