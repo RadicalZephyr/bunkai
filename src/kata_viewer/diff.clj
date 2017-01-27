@@ -71,6 +71,7 @@
           m (count b)
           max (+ m n)]
       (loop [ds (range 0 (inc max))
+             vs []
              v {1 0}]
         (if (seq ds)
           (let [d (first ds)
@@ -97,6 +98,6 @@
                           (recur (rest ks) (assoc v k x))))
                       v))]
             (if (reduced? v)
-              (unreduced v)
-              (recur (rest ds) v)))
+              (conj vs (unreduced v))
+              (recur (rest ds) (conj vs v) v)))
           :diff/length-of-ses>max)))))
