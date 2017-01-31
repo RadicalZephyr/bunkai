@@ -101,3 +101,6 @@
               (conj vs (unreduced v))
               (recur (rest ds) (conj vs v) v)))
           :diff/length-of-ses>max)))))
+
+(defn v->xys [v]
+  (map (fn [[k x]] [x (- x k)]) v))
